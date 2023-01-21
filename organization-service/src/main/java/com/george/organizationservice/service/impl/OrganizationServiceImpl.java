@@ -20,4 +20,10 @@ public class OrganizationServiceImpl implements OrganizationService {
         Organization savedOrganization = repository.save(organization);
         return OrganizationMapper.mapToOrganizationDto(savedOrganization);
     }
+
+    @Override
+    public OrganizationDto getOrganizationsByCode(String code) {
+        Organization organization = repository.findByOrganizationCode(code);
+        return OrganizationMapper.mapToOrganizationDto(organization);
+    }
 }

@@ -3,6 +3,7 @@ package com.george.employeeservice.service.impl;
 import com.george.employeeservice.dto.APIResponseDto;
 import com.george.employeeservice.dto.DepartmentDto;
 import com.george.employeeservice.dto.EmployeeDto;
+import com.george.employeeservice.dto.OrganizationDto;
 import com.george.employeeservice.entity.Employee;
 import com.george.employeeservice.mapper.EmployeeMapper;
 import com.george.employeeservice.repository.EmployeeRepository;
@@ -66,11 +67,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 //       DepartmentDto departmentDto = apiClient.getDepartment(employee.getDepartmentCode());
 
+        OrganizationDto organizationDto = webClient.get()
+                .uri("http://localhost:8083/api/organizations/" + employee.getOrganizationCode())
+                .retrieve()
+                .bodyToMono(OrganizationDto.class)
+                .block();
+
         EmployeeDto employeeDto = EmployeeMapper.mapToEmployeeDto(employee);
 
         APIResponseDto apiResponseDto = new APIResponseDto();
         apiResponseDto.setEmployee(employeeDto);
         apiResponseDto.setDepartment(departmentDto);
+        apiResponseDto.setOrganization(organizationDto);
 
         return apiResponseDto;
     }
